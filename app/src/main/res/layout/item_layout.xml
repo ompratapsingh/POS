@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+
+    app:cardBackgroundColor="@android:color/white"
+    app:cardElevation="2dp"
+    app:cardCornerRadius="5dp"
+
+    android:layout_marginBottom="5dp"
+    android:layout_marginLeft="10dp"
+    android:layout_marginRight="10dp"
+    android:layout_marginTop="1dp"
+
+    >
+<LinearLayout
+    android:layout_margin="5dp"
+    android:layout_width="match_parent"
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+    <com.facebook.drawee.view.SimpleDraweeView
+        xmlns:fresco="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivDishImage"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:layout_centerVertical="true"
+
+        android:layout_gravity="center"
+        fresco:placeholderImage="@drawable/app_logo"
+        fresco:actualImageResource="@drawable/app_logo"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundedCornerRadius="10dp"
+        fresco:roundingBorderColor="@color/appColor"
+        fresco:roundingBorderWidth="1dp"
+
+        fresco:roundBottomLeft="true"/>
+    <!--<ImageView
+        android:id="@+id/ivDishImage"
+        android:layout_width="60dp"
+        android:layout_height="60dp"
+        android:layout_centerVertical="true"
+        android:src="@drawable/btn_bg"
+
+       />-->
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:gravity="left"
+        android:layout_marginLeft="5dp"
+        android:orientation="vertical">
+        <TextView
+            android:id="@+id/tvDishName"
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:textStyle="bold"
+            android:textSize="14sp"
+            android:layout_gravity="left"
+android:ellipsize="end"
+            android:textColor="@android:color/black"
+            android:padding="2dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tvDishDesc"
+            android:layout_width="match_parent"
+            android:singleLine="true"
+            android:textSize="10sp"
+            android:layout_gravity="left"
+            android:padding="2dp"
+            android:maxLines="2"
+            android:minLines="2"
+            android:inputType="textMultiLine"
+            android:ellipsize="end"
+            android:layout_height="wrap_content" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <TextView
+                android:gravity="center"
+                android:padding="2dp"
+                android:text="Price: "
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@android:color/black"
+                />
+            <TextView
+                android:id="@+id/tvDishPrice"
+                android:gravity="center"
+                android:padding="1dp"
+                android:text="Rs 66"
+                android:textStyle="bold"
+                android:textColor="@android:color/black"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                />
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:orientation="horizontal">
+            <LinearLayout
+                android:id="@+id/llOff"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="Off : "
+
+                    android:textColor="@android:color/holo_green_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:id="@+id/tvDiscount"
+                    android:gravity="center"
+                    android:padding="1dp"
+
+                    android:textColor="@android:color/holo_green_light"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/llTax"
+                android:layout_width="0dp"
+                android:layout_weight="1"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:orientation="horizontal">
+
+                <TextView
+
+                    android:gravity="center"
+                    android:padding="1dp"
+                    android:text="Tax : "
+
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+
+                <TextView
+                    android:id="@+id/tvTax"
+                    android:gravity="center"
+                    android:padding="1dp"
+
+                    android:textColor="@android:color/holo_red_dark"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    />
+            </LinearLayout>
+        </LinearLayout>
+    </LinearLayout>
+
+</LinearLayout>
+</android.support.v7.widget.CardView>

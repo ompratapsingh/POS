@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--<color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>-->
+
+    <color name="colorPrimary">#3C7AC3</color>
+    <color name="colorPrimaryDark">#3C7AC3</color>
+    <color name="colorAccent">#3C7AC3</color>
+    <color name="appColor">#3C7AC3</color>
+    <color name="menu_title">#e1dad6d6</color>
+    <color name="occupied_color">#FDFE02</color>
+    <color name="settlement_color">#FF8B68</color>
+    <color name="blue_color">#33b5e5</color>
+    <color name="white">#ffffff</color>
+
+
+    <integer-array name="gplus_colors">
+        <item>@color/colorPrimaryDark</item>
+        <item>@color/settlement_color</item>
+        <item>@color/blue_color</item>
+        <item>@color/occupied_color</item>
+
+    </integer-array>
+<!--
+    <item>#33b5e5</item>
+    <item>#aa66cc</item>
+    <item>#99cc00</item>
+    <item>#ffbb33</item>-->
+</resources>

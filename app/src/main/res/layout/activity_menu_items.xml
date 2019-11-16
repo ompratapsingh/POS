@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+android:orientation="vertical"
+    android:background="@color/colorPrimary"
+    tools:context="com.mak.pos.MenuItemsActivity">
+
+
+    <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/rlSearch"
+        android:layout_width="match_parent"
+android:visibility="visible"
+        android:layout_height="match_parent"
+        android:scrollbars="vertical"
+
+        android:id="@+id/rvMenuItems">
+    </android.support.v7.widget.RecyclerView>
+    <RelativeLayout
+
+        android:id="@+id/rlSearch"
+        android:layout_width="wrap_content"
+        android:layout_height="45dp"
+
+        android:gravity="center"
+        android:orientation="vertical"
+        android:paddingLeft="3dp"
+        android:paddingRight="3dp"
+        android:visibility="visible">
+
+        <com.mak.pos.SearchBar.MaterialSearchBar
+            android:id="@+id/searchBar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_toLeftOf="@+id/ivCart"
+
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:gravity="center"
+
+            android:inputType="number" />
+        <com.github.pavlospt.CircleView
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/tvBadge"
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            app:cv_titleSize="7dp"
+            app:cv_subtitleText=""
+
+
+            app:cv_titleColor="@color/white"
+            app:cv_backgroundColorValue="@color/settlement_color"
+            app:cv_fillColor="@color/red"
+            app:cv_fillRadius="0.9"
+
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="-1dp"
+            app:cv_strokeWidthSize="0"/>
+
+        <ImageView
+
+            android:id="@+id/ivCart"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:text="Cart"
+
+android:layout_centerInParent="true"
+            android:src="@drawable/icn_cart"
+            android:layout_alignParentRight="true"
+            android:layout_marginLeft="3dp"
+            android:layout_marginTop="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_marginBottom="2dp"
+            android:textColor="@android:color/white"
+            android:visibility="visible"
+            android:padding="3dp"/>
+    </RelativeLayout>
+</RelativeLayout>

@@ -1,0 +1,477 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+
+    android:orientation="vertical"
+    android:layout_height="fill_parent">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+        <ImageView
+            android:id="@+id/ivBack"
+            android:layout_width="30dp"
+
+            android:layout_margin="10dp"
+            android:src="@drawable/icn_back"
+            android:adjustViewBounds="true"
+            android:layout_height="30dp" />
+        <TextView
+
+            android:layout_width="match_parent"
+            android:text="Settlement"
+            android:textColor="@color/appColor"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            android:layout_marginTop="10dp"
+            android:layout_centerHorizontal="true"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <LinearLayout
+        android:id="@+id/llPaymentMethod"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        android:orientation="vertical">
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvCash"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:cardBackgroundColor="@color/appColor"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="5dp"
+
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/edittext_text_size"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="Cash"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvCard"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:cardBackgroundColor="@color/appColor"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="5dp"
+
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/edittext_text_size"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="Debit/Credit Card"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+    <android.support.v7.widget.CardView
+        android:id="@+id/cvCheq"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+
+        app:cardBackgroundColor="@color/appColor"
+        app:cardElevation="2dp"
+        app:cardCornerRadius="5dp"
+
+        android:layout_marginBottom="10dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="50dp">
+            <TextView
+                android:layout_width="match_parent"
+                android:textSize="@dimen/edittext_text_size"
+                android:padding="10dp"
+                android:gravity="center"
+                android:text="Cheque"
+                android:textColor="@android:color/white"
+                android:textStyle="bold"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+    </android.support.v7.widget.CardView>
+        <android.support.v7.widget.CardView
+            android:id="@+id/cvDebit"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+
+            app:cardBackgroundColor="@color/appColor"
+            app:cardElevation="2dp"
+            app:cardCornerRadius="5dp"
+
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginTop="10dp"
+
+            >
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="50dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:textSize="@dimen/edittext_text_size"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:text="Debit"
+                    android:textColor="@android:color/white"
+                    android:textStyle="bold"
+                    android:layout_height="wrap_content" />
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llCash"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:visibility="gone"
+
+        android:layout_height="0dp">
+
+        <EditText
+            android:id="@+id/edtCashAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Amount"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+
+        <EditText
+            android:id="@+id/edtCashRecivedAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Recived Amount"
+            android:inputType="numberDecimal"
+
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+        <EditText
+            android:id="@+id/edtCashRefundAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Refund Amount"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/llCard"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:layout_height="0dp">
+        <EditText
+            android:id="@+id/edtCCBank"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="CC Bank"
+
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+        <EditText
+            android:id="@+id/edtCardAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Amount"
+
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+        <EditText
+            android:id="@+id/edtCardNumber"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Card Number"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+
+        <EditText
+            android:id="@+id/edtCardRecivedAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Recived Amount"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+        <EditText
+            android:id="@+id/edtCardRefundAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Refund Amount"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/llChq"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:layout_height="0dp">
+        <EditText
+            android:id="@+id/edtChequeNumber"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Cheque Number"
+
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+        <EditText
+            android:id="@+id/edtChequeAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Amount"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+        <EditText
+            android:id="@+id/edtChequeBank"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Bank"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+
+        <EditText
+            android:id="@+id/edtChequeRecivedAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Recived Amount"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+        <EditText
+            android:id="@+id/edtChequeRefundAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Refund Amount"
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/llDebit"
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_weight="1"
+        android:visibility="gone"
+        android:layout_height="0dp">
+        <EditText
+            android:id="@+id/edtDebitAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Amount"
+
+            android:inputType="numberDecimal"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+        <EditText
+            android:id="@+id/edtDebitorName"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Debtors Name"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+        <EditText
+            android:id="@+id/edtDebitRecivedAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:inputType="numberDecimal"
+            android:gravity="center"
+            android:singleLine="true"
+            android:layout_gravity="center"
+            android:hint="Recived Amount"
+
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+        <EditText
+            android:id="@+id/edtDebitRefundAmount"
+            android:layout_marginTop="@dimen/party_margin_top"
+            android:layout_width="@dimen/edt_with"
+            android:layout_height="@dimen/edittext_size"
+            android:textColor="@android:color/black"
+            android:focusable="true"
+            android:focusableInTouchMode="true"
+            android:gravity="center"
+            android:singleLine="true"
+            android:inputType="numberDecimal"
+            android:layout_gravity="center"
+            android:hint="Refund Amount"
+            android:background="@drawable/edittext_bg"
+            android:textSize="@dimen/edittext_text_size"/>
+
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btnDone"
+        android:layout_marginTop="50dp"
+        android:layout_gravity="center"
+        android:layout_width="@dimen/btn_save_size"
+        android:background="@drawable/btn_bg"
+        android:textSize="@dimen/btn_text_size"
+        android:textColor="@android:color/white"
+        android:text="DONE"
+        android:visibility="gone"
+        android:layout_marginBottom="50dp"
+        android:layout_height="50dp" />
+</LinearLayout>

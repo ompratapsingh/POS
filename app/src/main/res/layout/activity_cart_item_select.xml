@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    tools:context="com.mak.pos.CartItemSelectActivity">
+    <LinearLayout
+        android:layout_marginTop="20dp"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:orientation="vertical">
+    <com.facebook.drawee.view.SimpleDraweeView
+        xmlns:fresco="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/ivDishImage"
+        android:layout_width="@dimen/cart_item_image_size"
+        android:layout_height="@dimen/cart_item_image_size"
+        android:adjustViewBounds="true"
+        android:layout_centerVertical="true"
+
+        android:layout_gravity="center"
+        fresco:placeholderImage="@drawable/app_logo"
+        fresco:actualImageResource="@drawable/app_logo"
+        fresco:actualImageScaleType="centerCrop"
+        fresco:roundedCornerRadius="10dp"
+        fresco:roundingBorderColor="@color/appColor"
+        fresco:roundingBorderWidth="1dp"
+
+        fresco:roundBottomLeft="true"/>
+    <TextView
+        android:id="@+id/tvDishName"
+        android:layout_width="match_parent"
+
+        android:gravity="center"
+        android:textStyle="bold"
+        android:textSize="16sp"
+        android:layout_gravity="center"
+        android:ellipsize="end"
+
+        android:textColor="@android:color/black"
+        android:padding="2dp"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/tvDishDesc"
+        android:layout_width="match_parent"
+        android:singleLine="true"
+        android:textSize="11sp"
+        android:layout_gravity="center"
+
+        android:padding="2dp"
+        android:scrollbars="vertical"
+        android:inputType="textMultiLine"
+
+        android:layout_height="wrap_content" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight=".40"
+        android:orientation="vertical"
+        android:gravity="center"
+        android:layout_gravity="center">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:layout_gravity="center"
+            android:orientation="horizontal">
+<ImageView
+    android:id="@+id/ivPlus"
+    android:layout_width="wrap_content"
+    android:layout_height="50dp"
+    android:adjustViewBounds="true"
+    android:layout_marginRight="20dp"
+    android:src="@drawable/icn_plus"/>
+        <TextView
+
+
+            android:id="@+id/tvQuantity"
+            android:textSize="30sp"
+            android:textColor="@android:color/black"
+            android:text="1"
+
+            android:maxLength="5"
+            android:layout_width="100dp"
+            android:gravity="center"
+            android:layout_height="wrap_content" />
+        <ImageView
+            android:id="@+id/ivMinus"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:layout_marginLeft="20dp"
+            android:adjustViewBounds="true"
+            android:src="@drawable/icn_minus"/>
+        ></LinearLayout>
+
+        <Button
+            android:id="@+id/btnCart"
+
+            android:layout_width="match_parent"
+            android:background="@color/appColor"
+            android:textSize="@dimen/btn_text_size"
+            android:textColor="@android:color/white"
+            android:text="Add To Cart"
+
+            android:layout_height="50dp" />
+    </LinearLayout>
+
+</LinearLayout>
