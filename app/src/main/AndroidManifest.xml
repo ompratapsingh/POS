@@ -22,23 +22,28 @@
         <activity
             android:name=".SplashActivity"
             android:screenOrientation="portrait"
+
              />
         <activity
             android:name=".TableSelectActivity"
             android:screenOrientation="portrait"
+
             />
         <activity
             android:name=".PartyInfoActivity"
             android:screenOrientation="portrait"
+
             android:windowSoftInputMode="adjustResize|stateHidden" />
         <activity
             android:name=".MenuItemsActivity"
             android:screenOrientation="portrait"
+
             >
         </activity>
         <activity
             android:name=".LoginActivity"
             android:screenOrientation="portrait"
+
             >
 
             <intent-filter>
@@ -49,17 +54,20 @@
         </activity>
         <activity
             android:name=".CartItemSelectActivity"
-            android:screenOrientation="portrait"
+android:screenOrientation="portrait"
             ></activity>
         <activity
             android:name=".CartViewActivity"
             android:screenOrientation="portrait"
+
+
             >
 
         </activity>
         <activity
             android:name=".ServerSettingActivity"
-android:screenOrientation="portrait"
+            android:screenOrientation="portrait"
+
             >
           <!--  <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -31,8 +31,8 @@ public class Constant {
 
 
     public static String API_TABLE_STATUS_VACANT = "TABLE_STATUS_AVAILABLE";
-    public static String API_TABLE_STATUS_OCCUPIED = "TABALE_STATUS_OCCUPIED";
-    public static String API_TABLE_STATUS_SETTLEMENT_PENDING = "TABALE_STATUS_SETTLEMENT_PENDING";
+    public static String API_TABLE_STATUS_OCCUPIED = "TABLE_STATUS_OCCUPIED";
+    public static String API_TABLE_STATUS_SETTLEMENT_PENDING = "TABLE_STATUS_SETTLEMENT_PENDING";
 
 
     public static String TABLE_CODE = "table_code";

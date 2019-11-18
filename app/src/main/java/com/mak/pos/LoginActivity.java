@@ -23,8 +23,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-     //  App.getPrefs().setString("URL","http://ec2-18-144-24-129.us-west-1.compute.amazonaws.com");
-       // App.getPrefs().setString("PORT","8080");
+      //    App.getPrefs().setString("URL","http://ec2-13-57-17-122.us-west-1.compute.amazonaws.com");
+     //App.getPrefs().setString("PORT","8080");
         if(App.getPrefs().getValue("URL")==null&&App.getPrefs().getValue("PORT")==null)
         {
 
@@ -39,7 +39,7 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         input_email=(EditText)findViewById(R.id.input_email);
         input_password=(EditText)findViewById(R.id.input_password);
-        //input_email.setText("root");
+       // input_email.setText("root");
         //input_password.setText("123");
 
         findViewById(R.id.btn_login).setOnClickListener(new View.OnClickListener() {
@@ -48,10 +48,6 @@ public class LoginActivity extends AppCompatActivity {
                 if(input_email.getText().toString().trim().length()==0||input_email.getText().toString().trim().isEmpty())
                 {
                     Toast.makeText(getApplicationContext(),"Please enter username",Toast.LENGTH_LONG).show();
-                    /*
-                    App.getPrefs().setBoolean("isLogin",true);
-                    startActivity(new Intent(getApplicationContext(),SplashActivity.class));
-                    finish();*/
 
                 }else if(input_password.getText().toString().trim().length()==0||input_password.getText().toString().trim().isEmpty()) {
                     Toast.makeText(getApplicationContext(),"Please enter Password",Toast.LENGTH_LONG).show();

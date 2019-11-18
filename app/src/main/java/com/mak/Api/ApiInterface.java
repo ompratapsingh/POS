@@ -22,6 +22,7 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
+
     @Headers("content-type: application/json")
     @POST("user/login")
     Call<UserModel> onLoginAttempt(@Body JsonObject userBody);

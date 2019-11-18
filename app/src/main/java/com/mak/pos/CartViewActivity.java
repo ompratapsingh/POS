@@ -10,6 +10,7 @@ import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.util.Range;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
@@ -28,13 +29,9 @@ import com.mak.App;
 import com.mak.pos.Adapter.CartItemListAdapter;
 import com.mak.pos.Model.POJO.Cart;
 import com.mak.pos.Model.POJO.Items;
-import com.mak.pos.Model.POJO.MenuItemInfo;
-import com.mak.pos.Model.TableModel;
 import com.mak.pos.Utility.Constant;
 
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Set;
 
 import okhttp3.ResponseBody;
 import retrofit2.Callback;
@@ -54,12 +51,12 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
     private ImageView ivBack;
     private LinearLayout[] llPaymentTypes;
     private EditText[] edtAll, edtAmount, edtDisable;
-    public static Dialog dialog, onViewCartDialog, updateItemdialog;
+    public static Dialog dialog, onViewCartDialog, updateItemdialog, specialDiscdialog;
     ArrayList<Items> allItems;
     private Cart serverCart;
     private Cart genrateBillCart;
     public static CartViewActivity cartCtx;
-    private boolean isLocalCartView=true;
+    private boolean isLocalCartView = true;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -216,7 +213,12 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
                 //setTblStatus(Constant.API_TABLE_STATUS_SETTLEMENT_PENDING);
                 tvGBill.setEnabled(false);
                 tvGBill.setClickable(false);
-                onGenrateBill(Constant.CurrentTable);
+                if(App.getCartValue(String.valueOf(Constant.CurrentTable))!=null&&App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount()==null)
+                {
+                    onSpecialDisscDialog();
+                }else {
+                    onGenrateBill(Constant.CurrentTable, -1);
+                }
                 //TableSelectActivity.onTableStatusCart(cart.getTableCode(),Constant.API_TABLE_STATUS_SETTLEMENT_PENDING);
                 break;
 
@@ -265,7 +267,7 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
                 onValidateSettlement();
                 break;
             case R.id.tvLocalCart:
-                isLocalCartView=true;
+                isLocalCartView = true;
                 tvSave.setVisibility(View.VISIBLE);
                 tvGBill.setVisibility(View.GONE);
                 tvSettlement.setVisibility(View.GONE);
@@ -274,7 +276,7 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
                 onCartViewSet(true);
                 break;
             case R.id.tvSevrverCart:
-                isLocalCartView=false;
+                isLocalCartView = false;
                 getCart(String.valueOf(Constant.CurrentTable));
                 tvSave.setVisibility(View.GONE);
                 tvGBill.setVisibility(View.VISIBLE);
@@ -296,7 +298,7 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
 
                 if (allItems != null) {
                     for (Items items : allItems) {
-                        if(items.getQty()>0) {
+                        if (items.getQty() > 0) {
                             if (items != null && items.getDiscAmt() != -1)
                                 discAmount = discAmount + items.getDiscAmt();
                             if (items != null && items.getTaxamt() != -1)
@@ -317,19 +319,36 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
             }
             tvTotal.setText(Constant.twoDigitValue(total));
             if (serverCart != null && serverCart.getRoundoff() != null && !serverCart.getRoundoff().equals("")) {
-                tvRoundOff.setText("-"+Constant.twoDigitValue(Float.parseFloat(serverCart.getRoundoff())));
+                tvRoundOff.setText("-" + Constant.twoDigitValue(Float.parseFloat(serverCart.getRoundoff())));
             } else {
                 tvRoundOff.setText("-0.00");
             }
 
             tvSurCharge.setText("+" + Constant.twoDigitValue(surCharge));
             tvAddTax.setText("+" + Constant.twoDigitValue(addTax));
-            tvDiscount.setText("-" + Constant.twoDigitValue(discAmount));
-            if (serverCart != null && serverCart.getTotalbillAmount() != 1)
-                tvNet.setText(String.valueOf((int)serverCart.getTotalbillAmount()));
+
+
+            if (App.getCartValue(String.valueOf(Constant.CurrentTable)) != null &&serverCart!=null&&serverCart.getTotalbillAmount()!=-1&& App.getCartValue(String.valueOf(Constant.CurrentTable))!=null&&App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount()!=null&&!App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount().equals("")&&!App.getCartValue(String.valueOf(Constant.CurrentTable)).equals("null")&&Integer.parseInt(App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount())>0) {
+                int disc = serverCart.getTotalbillAmount() * Integer.parseInt(App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount());
+                disc = disc / 100;
+
+                tvDiscount.setText("-" +Constant.twoDigitValue(disc));
+                tvNet.setText(String.valueOf((int) serverCart.getTotalbillAmount()-disc));
+
+            }else
+            {
+                tvDiscount.setText("-" + Constant.twoDigitValue(discAmount));
+                if (serverCart != null && serverCart.getTotalbillAmount() != 1)
+                    tvNet.setText(String.valueOf((int) serverCart.getTotalbillAmount()));
+                else
+                    tvNet.setText(String.valueOf(0));
+            }
+
+
+
             tvTax.setText("+" + Constant.twoDigitValue(taxAmount));
             if (allItems != null)
-                rvCart.setAdapter(new CartItemListAdapter(CartViewActivity.this, allItems,isLocal,serverCart));
+                rvCart.setAdapter(new CartItemListAdapter(CartViewActivity.this, allItems, isLocal, serverCart));
 
 
         } else {
@@ -360,7 +379,7 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
                 String[] roundOffValue = roundOff.split("\\.");
 
                 if (roundOffValue.length > 1) {
-                    tvRoundOff.setText("-0."+roundOffValue[1]);
+                    tvRoundOff.setText("-0." + roundOffValue[1]);
 
                 } else {
                     tvRoundOff.setText("-0.00");
@@ -373,10 +392,10 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
             tvSurCharge.setText("+" + Constant.twoDigitValue(subchrg));
             tvAddTax.setText("+" + Constant.twoDigitValue(addtax));
             tvDiscount.setText("-" + Constant.twoDigitValue(totalDiscAmt));
-            tvNet.setText(String.valueOf((int)finalBillAmount));
+            tvNet.setText(String.valueOf((int) finalBillAmount));
             tvTax.setText("+" + Constant.twoDigitValue(taxAmt));
             if (allItems != null)
-                rvCart.setAdapter(new CartItemListAdapter(CartViewActivity.this, allItems,isLocal,serverCart));
+                rvCart.setAdapter(new CartItemListAdapter(CartViewActivity.this, allItems, isLocal, serverCart));
 
         }
 
@@ -467,10 +486,10 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
             editText.setText("");
         }
         for (EditText editText : edtAmount) {
-            if (genrateBillCart != null && genrateBillCart.getTotalbillAmount() != -1)
-                editText.setText(String.valueOf((int)genrateBillCart.getTotalbillAmount()));
-            else if (serverCart != null && serverCart.getTotalbillAmount() != -1)
-                editText.setText(String.valueOf((int)serverCart.getTotalbillAmount()));
+            if (genrateBillCart != null && genrateBillCart.getTotalbillAmountWithDsic() != -1)
+                editText.setText(String.valueOf((int) genrateBillCart.getTotalbillAmountWithDsic()));
+            else if (serverCart != null && serverCart.getTotalbillAmountWithDsic() != -1)
+                editText.setText(String.valueOf((int) serverCart.getTotalbillAmountWithDsic()));
 
             editText.setClickable(false);
             editText.setEnabled(false);
@@ -507,7 +526,7 @@ public class CartViewActivity extends AppCompatActivity implements View.OnClickL
                 tableCart.addProperty("captain", cartValue.getCaptain());
             if (cartValue.getStoreCode() != null)
                 tableCart.addProperty("storeCode", cartValue.getStoreCode());
-            else if(Constant.StoreCode!=-1)
+            else if (Constant.StoreCode != -1)
                 tableCart.addProperty("storeCode", Constant.StoreCode);
 
             if (App.getCurrentUser().getId() != null)
@@ -612,7 +631,7 @@ tableCart.add("items",itemsArray);
             }
             float finalBillAmount = (totalbillAmount - totalDiscAmt) + taxAmt + addtax + subchrg;
             tableCart.addProperty("totalDiscAmt", totalDiscAmt);
-            tableCart.addProperty("totalbillAmount", (int)finalBillAmount);
+            tableCart.addProperty("totalbillAmount", (int) finalBillAmount);
             String roundOff = String.valueOf(Constant.twoDigitValue(finalBillAmount));
 
 
@@ -633,12 +652,11 @@ tableCart.add("items",itemsArray);
 
             tableCart.add("items", itemsArray);
 
-            onStoreCart(tableCart,true);
+            onStoreCart(tableCart, true);
         } else {
             Toast.makeText(getApplicationContext(), "No item for SaveKot", Toast.LENGTH_LONG).show();
         }
     }
-
 
 
     private void onUpdateCart(Items updatedItem, int itemCount) {
@@ -660,7 +678,7 @@ tableCart.add("items",itemsArray);
             if (serverCart.getStoreCode() != null)
                 updateCart.addProperty("storeCode", serverCart.getStoreCode());
             else if (Constant.StoreCode != -1)
-                updateCart.addProperty("storeCode",Constant.StoreCode);
+                updateCart.addProperty("storeCode", Constant.StoreCode);
 
             if (App.getCurrentUser().getId() != null)
                 updateCart.addProperty("enteredBy", App.getCurrentUser().getId());
@@ -692,44 +710,42 @@ tableCart.add("items",itemsArray);
             Items item = updatedItem;
 
 
-            float disc= item.getDisc()/item.getQty();
-            float discAmt= item.getDiscAmt() / item.getQty();
-            float taxamt= item.getTaxamt() / item.getQty();
-            float addtaxAmt= item.getAddtaxAmt() / item.getQty();
-            float addtaxAmt2= item.getAddtaxAmt2() / item.getQty();
+            float disc = item.getDisc() / item.getQty();
+            float discAmt = item.getDiscAmt() / item.getQty();
+            float taxamt = item.getTaxamt() / item.getQty();
+            float addtaxAmt = item.getAddtaxAmt() / item.getQty();
+            float addtaxAmt2 = item.getAddtaxAmt2() / item.getQty();
             item.setQty(itemCount);
-                JsonObject itemObject = new JsonObject();
-                itemObject.addProperty("sno", item.getSno());
-                itemObject.addProperty("code", item.getCode());
-                itemObject.addProperty("Qty", "-"+String.valueOf(item.getQty()));
-                itemObject.addProperty("rate", item.getRate());
-                itemObject.addProperty("disc", disc * item.getQty());
-                itemObject.addProperty("discAmt", discAmt* item.getQty());
-                itemObject.addProperty("taxCode", item.getTaxCode());
-                itemObject.addProperty("remarks", "");
-                itemObject.addProperty("taxamt", taxamt * item.getQty());
-                itemObject.addProperty("addtaxAmt", addtaxAmt * item.getQty());
-                itemObject.addProperty("addtaxAmt2", addtaxAmt2 * item.getQty());
+            JsonObject itemObject = new JsonObject();
+            itemObject.addProperty("sno", item.getSno());
+            itemObject.addProperty("code", item.getCode());
+            itemObject.addProperty("Qty", "-" + String.valueOf(item.getQty()));
+            itemObject.addProperty("rate", item.getRate());
+            itemObject.addProperty("disc", disc * item.getQty());
+            itemObject.addProperty("discAmt", discAmt * item.getQty());
+            itemObject.addProperty("taxCode", item.getTaxCode());
+            itemObject.addProperty("remarks", "");
+            itemObject.addProperty("taxamt", taxamt * item.getQty());
+            itemObject.addProperty("addtaxAmt", addtaxAmt * item.getQty());
+            itemObject.addProperty("addtaxAmt2", addtaxAmt2 * item.getQty());
             //itemObject.addProperty("storeCode",item.gets());
               /*  totalDiscAmt = totalDiscAmt + (item.getDisc() * item.getQty());
                 totalbillAmount = totalbillAmount + (item.getRate() * item.getQty());
                 taxAmt = taxAmt + (item.getTaxamt() * item.getQty());
                 addtax = addtax + (item.getAddtaxAmt() * item.getQty());
                 subchrg = subchrg + (item.getAddtaxAmt2() * item.getQty());*/
-                itemsArray.add(itemObject);
+            itemsArray.add(itemObject);
             updateCart.add("items", itemsArray);
 
 
             updateCart.addProperty("totalDiscAmt", 0);
             updateCart.addProperty("totalbillAmount", 0);
-             updateCart.addProperty("roundoff","0");
+            updateCart.addProperty("roundoff", "0");
 
 
-
-
-            onStoreCart(updateCart,false);
-            }
-          //  float finalBillAmount = (totalbillAmount - totalDiscAmt) + taxAmt + addtax + subchrg;
+            onStoreCart(updateCart, false);
+        }
+        //  float finalBillAmount = (totalbillAmount - totalDiscAmt) + taxAmt + addtax + subchrg;
            /* tableCart.addProperty("totalDiscAmt", 0);
             tableCart.addProperty("totalbillAmount", 0);
             String roundOff = String.valueOf(0);
@@ -752,7 +768,7 @@ tableCart.add("items",itemsArray);
 
             tableCart.add("items", itemsArray);*/
 
-            //onSaveCart(tableCart);
+        //onSaveCart(tableCart);
        /* } else {
             Toast.makeText(getApplicationContext(), "No item for SaveKot", Toast.LENGTH_LONG).show();
         }*/
@@ -768,17 +784,16 @@ tableCart.add("items",itemsArray);
             public void onResponse(retrofit2.Call<ResponseBody> call, Response<ResponseBody> response) {
 
                 if (response.isSuccessful()) {
-                    if(isLocalCart) {
+                    if (isLocalCart) {
                         Cart cartValue = App.getCartValue(String.valueOf(Constant.CurrentTable));
                         cartValue.setItems(null);
                         App.StoreCartValue(cartValue);
-                        Toast.makeText(getApplicationContext(), "Saved Successfully", Toast.LENGTH_LONG).show();
-                       // tvLocalCart.performClick();
-                        startActivity(new Intent(CartViewActivity.this,LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                        com.mak.Constant.showToast(CartViewActivity.this,"Saved Successfully");
+                        // tvLocalCart.performClick();
+                        startActivity(new Intent(CartViewActivity.this, TableSelectActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                         finish();
-                    }else
-                    {
-                        Toast.makeText(getApplicationContext(), "Updated Successfully", Toast.LENGTH_LONG).show();
+                    } else {
+                        com.mak.Constant.showToast(CartViewActivity.this,"Updated Successfully");
 
                         tvSevrverCart.performClick();
                     }
@@ -829,7 +844,117 @@ tableCart.add("items",itemsArray);
 
     }
 
-    public  void onUpdateItemDialog(final Items selectedItem, final boolean isLocal) {
+
+    public void onSpecialDisscDialog() {
+
+        specialDiscdialog = new Dialog(cartCtx);
+        specialDiscdialog.setContentView(R.layout.special_disc_dialog);
+        specialDiscdialog.setCancelable(false);
+        WindowManager.LayoutParams lp = new WindowManager.LayoutParams();
+        lp.copyFrom(specialDiscdialog.getWindow().getAttributes());
+        lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+        lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+        lp.gravity = Gravity.CENTER;
+
+        specialDiscdialog.getWindow().setAttributes(lp);
+
+        TextView tvTotal = (TextView) specialDiscdialog.findViewById(R.id.tvTotal);
+        final TextView tvSpecDiscount = (TextView) specialDiscdialog.findViewById(R.id.tvSpecDiscount);
+        final TextView tvPayAmount = (TextView) specialDiscdialog.findViewById(R.id.tvPayAmount);
+        final EditText edtDiscount = (EditText) specialDiscdialog.findViewById(R.id.edtDiscount);
+
+        Button btnDone = (Button) specialDiscdialog.findViewById(R.id.btnDone);
+        Button btnCancel = (Button) specialDiscdialog.findViewById(R.id.btnCancel);
+
+        if (serverCart != null) {
+            if (serverCart.getTotalbillAmount() != -1) {
+                tvTotal.setText(String.valueOf(serverCart.getTotalbillAmount()));
+                tvPayAmount.setText(String.valueOf(serverCart.getTotalbillAmount()));
+                tvSpecDiscount.setText("-0");
+
+            }
+        }
+
+        edtDiscount.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!s.equals("") && s.length() > 0) {
+
+                    if(Integer.parseInt(s.toString())>=0&&Integer.parseInt(s.toString())<=100) {
+                        if (serverCart != null && serverCart.getTotalbillAmount() != -1) {
+                            int disc = serverCart.getTotalbillAmount() * Integer.parseInt(edtDiscount.getText().toString());
+                            disc = disc / 100;
+
+                            tvSpecDiscount.setText("-" + String.valueOf(disc));
+                            tvPayAmount.setText(String.valueOf(serverCart.getTotalbillAmount() - disc));
+
+                        }
+                    }
+                    else
+                    {
+                        tvSpecDiscount.setText("-0");
+                        if (serverCart != null && serverCart.getTotalbillAmount() != -1) {
+                            tvPayAmount.setText(String.valueOf(serverCart.getTotalbillAmount()));
+                        }
+                        Toast.makeText(getApplicationContext(),"Enter Percentage between 0 to 100",Toast.LENGTH_LONG).show();
+                    }
+                }else
+                {
+                    tvSpecDiscount.setText("-0");
+                    if (serverCart != null && serverCart.getTotalbillAmount() != -1) {
+                        tvPayAmount.setText(String.valueOf(serverCart.getTotalbillAmount()));
+                    }
+                    Toast.makeText(getApplicationContext(),"Enter Percentage between 0 to 100",Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+
+        btnDone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                if(edtDiscount.getText().toString().length()>0&&Integer.parseInt(edtDiscount.getText().toString())>=0&&Integer.parseInt(edtDiscount.getText().toString())<=100)
+                {
+                    specialDiscdialog.dismiss();
+                    onGenrateBill(Constant.CurrentTable,Integer.parseInt(edtDiscount.getText().toString()));
+                }else
+                {
+                    Toast.makeText(getApplicationContext(),"Enter Percentage between 0 to 100",Toast.LENGTH_LONG).show();
+                }
+
+
+
+            }
+        });
+        btnCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                specialDiscdialog.dismiss();
+                onGenrateBill(Constant.CurrentTable,-1);
+                Cart cartValue = App.getCartValue(String.valueOf(Constant.CurrentTable));
+                cartValue.setSpecialDiscount(null);
+                App.StoreCartValue(cartValue);
+
+            }
+        });
+
+        specialDiscdialog.show();
+
+
+    }
+
+    public void onUpdateItemDialog(final Items selectedItem, final boolean isLocal) {
         itemCount = 0;
 
         updateItemdialog = new Dialog(cartCtx);
@@ -854,12 +979,10 @@ tableCart.add("items",itemsArray);
             tvItemName.setText(selectedItem.getItem_name());
         }
 
-        if (isLocal)
-        {
+        if (isLocal) {
             tvQuantity.setText(String.valueOf(itemCount));
-        }else
-        {
-            tvQuantity.setText("-"+String.valueOf(itemCount));
+        } else {
+            tvQuantity.setText("-" + String.valueOf(itemCount));
         }
 
         ivMinus.setOnClickListener(new View.OnClickListener() {
@@ -868,12 +991,10 @@ tableCart.add("items",itemsArray);
                 if (itemCount > 0) {
                     itemCount--;
                 }
-                if (isLocal)
-                {
+                if (isLocal) {
                     tvQuantity.setText(String.valueOf(itemCount));
-                }else
-                {
-                    tvQuantity.setText("-"+String.valueOf(itemCount));
+                } else {
+                    tvQuantity.setText("-" + String.valueOf(itemCount));
                 }
 
             }
@@ -882,21 +1003,18 @@ tableCart.add("items",itemsArray);
             @Override
             public void onClick(View v) {
 
-                if(!isLocal)
-                {
-                    if(itemCount<selectedItem.getQty())
-                    {
+                if (!isLocal) {
+                    if (itemCount < selectedItem.getQty()) {
                         itemCount++;
                     }
-                }else
-                {
+                } else {
                     itemCount++;
                 }
 
-                if(isLocal)
+                if (isLocal)
                     tvQuantity.setText(String.valueOf(itemCount));
                 else
-                    tvQuantity.setText("-"+String.valueOf(itemCount));
+                    tvQuantity.setText("-" + String.valueOf(itemCount));
 
             }
         });
@@ -927,32 +1045,26 @@ tableCart.add("items",itemsArray);
                             }
                         }
 
-                        if(tempCart.size()==0)
-                        {
-                            tempCart=null;
+                        if (tempCart.size() == 0) {
+                            tempCart = null;
                         }
                         cart.setItems(tempCart);
                         App.StoreCartValue(cart);
                         tvLocalCart.performClick();
                     }
-                }else
-                {
+                } else {
 
                     Items iupdatedItem = null;
-                    if(serverCart!=null&&serverCart.getItems()!=null)
-                    {
-                        for(Items items:serverCart.getItems())
-                        {
-                            if(items.getCode().equals(selectedItem.getCode()))
-                            {
-                                iupdatedItem=items;
+                    if (serverCart != null && serverCart.getItems() != null) {
+                        for (Items items : serverCart.getItems()) {
+                            if (items.getCode().equals(selectedItem.getCode())) {
+                                iupdatedItem = items;
                                 //iupdatedItem.setQty();
-break;
+                                break;
                             }
                         }
-                        if(iupdatedItem!=null)
-                        {
-                            onUpdateCart(iupdatedItem,itemCount);
+                        if (iupdatedItem != null) {
+                            onUpdateCart(iupdatedItem, itemCount);
                         }
                     }
                 }
@@ -1010,14 +1122,24 @@ break;
 
 
                     serverCart = response.body();
-                    if(serverCart.getTableStatus()!=null&&serverCart.getTableStatus().equals(Constant.TABLE_STATUS_SETTLEMENT_PENDING))
+                    if (App.getCartValue(String.valueOf(Constant.CurrentTable)) != null &&serverCart.getTotalbillAmount()!=-1&& App.getCartValue(String.valueOf(Constant.CurrentTable))!=null&&App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount()!=null&&!App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount().equals("")&&!App.getCartValue(String.valueOf(Constant.CurrentTable)).equals("null")&&Integer.parseInt(App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount())>0) {
+                        int disc = serverCart.getTotalbillAmount() * Integer.parseInt(App.getCartValue(String.valueOf(Constant.CurrentTable)).getSpecialDiscount());
+                        disc = disc / 100;
+                        serverCart.setTotalbillAmountWithDsic(serverCart.getTotalbillAmount()-disc);
+
+
+
+                    }else
                     {
-                        tvSettlement.setOnClickListener(CartViewActivity.this);
+                        serverCart.setTotalbillAmountWithDsic(serverCart.getTotalbillAmount());
 
                     }
-                  //  onCartSet();
-                    if(!isLocalCartView)
-                    onCartViewSet(false);
+                    if (serverCart.getTableStatus() != null && serverCart.getTableStatus().equals(Constant.TABLE_STATUS_SETTLEMENT_PENDING)) {
+                        tvSettlement.setOnClickListener(CartViewActivity.this);
+                    }
+                    //  onCartSet();
+                    if (!isLocalCartView)
+                        onCartViewSet(false);
 
 
                 }
@@ -1030,15 +1152,23 @@ break;
         });
     }
 
-    public void onGenrateBill(int tableId) {
+    public void onGenrateBill(int tableId, final int specialDisc) {
         com.mak.Constant.ShowProgressHud(CartViewActivity.this, "");
         ApiInterface apiInterface = ApiClient.getClient().create(ApiInterface.class);
 
         JsonObject object = new JsonObject();
         object.addProperty("tableCode", tableId);
-        if(serverCart!=null&&serverCart.getSrl()!=null) {
+        if (serverCart != null && serverCart.getSrl() != null) {
             object.addProperty("srl", serverCart.getSrl());
         }
+        /*if(specialDisc!=-1)
+        {*/
+
+        if(specialDisc>0)
+            object.addProperty("specialDiscount",String.valueOf(specialDisc));
+        else
+            object.addProperty("specialDiscount",String.valueOf(0));
+        //}
         retrofit2.Call<Cart> call = apiInterface.onGenrateBill(object);
         call.enqueue(new Callback<Cart>() {
             @Override
@@ -1047,15 +1177,24 @@ break;
                 tvGBill.setEnabled(true);
                 tvGBill.setClickable(true);
                 if (response != null && response.isSuccessful() && response.body() != null) {
+                    if(specialDisc!=-1)
+                    {
+                        Cart cartValue = App.getCartValue(String.valueOf(Constant.CurrentTable));
+                        if(cartValue!=null) {
+                            cartValue.setSpecialDiscount(String.valueOf(specialDisc));
+                            App.StoreCartValue(cartValue);
+                        }
+                    }
                     genrateBillCart = response.body();
                     serverCart = response.body();
-                    if(serverCart.getTableStatus()!=null&&serverCart.getTableStatus().equals(Constant.TABLE_STATUS_SETTLEMENT_PENDING))
-                    {
+
+                    if (serverCart.getTableStatus() != null && serverCart.getTableStatus().equals(Constant.TABLE_STATUS_SETTLEMENT_PENDING)) {
                         tvSettlement.setOnClickListener(CartViewActivity.this);
 
                     }
-                    Toast.makeText(getApplicationContext(), "GenerateBill Successfully", Toast.LENGTH_LONG).show();
-startActivity(new Intent(CartViewActivity.this,LoginActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP|Intent.FLAG_ACTIVITY_CLEAR_TASK));
+                    com.mak.Constant.showToast(CartViewActivity.this,"GenerateBill Successfully");
+
+                    startActivity(new Intent(CartViewActivity.this, TableSelectActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     finish();
 
                 }
@@ -1098,11 +1237,13 @@ startActivity(new Intent(CartViewActivity.this,LoginActivity.class).setFlags(Int
             public void onResponse(retrofit2.Call<ResponseBody> call, Response<ResponseBody> response) {
                 com.mak.Constant.cancelDialogue();
                 if (response != null && response.isSuccessful() && response.body() != null) {
-                    Toast.makeText(getApplicationContext(), "Payment Successfully", Toast.LENGTH_LONG).show();
+                    App.getPrefs().setString(String.valueOf(Constant.CurrentTable), null);
+
+                    com.mak.Constant.showToast(CartViewActivity.this,"Payment Successfully");
+                    //Toast.makeText(getApplicationContext(), "Payment Successfully", Toast.LENGTH_LONG).show();
                     startActivity(new Intent(CartViewActivity.this, TableSelectActivity.class).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_CLEAR_TASK));
                     finish();
                     // serverCart = response.body();
-
                 }
             }
 
@@ -1157,7 +1298,7 @@ startActivity(new Intent(CartViewActivity.this,LoginActivity.class).setFlags(Int
                 , edtDebitRecivedAmount, edtDebitRefundAmount, edtChequeRecivedAmount,
                 edtChequeRefundAmount, edtCardRefundAmount, edtCardRecivedAmount};
         edtAmount = new EditText[]{edtCashAmount, edtCardAmount, edtChequeAmount, edtDebitAmount};
-        edtDisable = new EditText[]{edtCashRefundAmount, edtDebitRefundAmount,edtCardRefundAmount,edtChequeRefundAmount};
+        edtDisable = new EditText[]{edtCashRefundAmount, edtDebitRefundAmount, edtCardRefundAmount, edtChequeRefundAmount};
         ivBack.setVisibility(View.INVISIBLE);
         llPaymentMethod.setVisibility(View.VISIBLE);
         btnDone.setOnClickListener(this);
@@ -1178,8 +1319,8 @@ startActivity(new Intent(CartViewActivity.this,LoginActivity.class).setFlags(Int
                 if (s != null && !s.equals("") && !s.equals(" ") && s.length() > 0) {
                     int billAmount = 0;
                     float recivedAmount = Float.parseFloat(edtCashRecivedAmount.getText().toString().trim());
-                    if (serverCart != null && serverCart.getTotalbillAmount() != -1) {
-                        billAmount =(int) serverCart.getTotalbillAmount();
+                    if (serverCart != null && serverCart.getTotalbillAmountWithDsic() != -1) {
+                        billAmount = (int) serverCart.getTotalbillAmountWithDsic();
                     }/*else  if(serverCart!=null&&serverCart.getTotalbillAmount()!=-1)
                     {
                         billAmount=serverCart.getTotalbillAmount();
@@ -1212,8 +1353,8 @@ startActivity(new Intent(CartViewActivity.this,LoginActivity.class).setFlags(Int
                 if (s != null && !s.equals("") && !s.equals(" ") && s.length() > 0) {
                     int billAmount = 0;
                     float recivedAmount = Float.parseFloat(edtDebitRecivedAmount.getText().toString().trim());
-                    if (serverCart != null && serverCart.getTotalbillAmount() != -1) {
-                        billAmount =(int) serverCart.getTotalbillAmount();
+                    if (serverCart != null && serverCart.getTotalbillAmountWithDsic() != -1) {
+                        billAmount = (int) serverCart.getTotalbillAmountWithDsic();
                     }/*else  if(serverCart!=null&&serverCart.getTotalbillAmount()!=-1)
                     {
                         billAmount=serverCart.getTotalbillAmount();
@@ -1247,8 +1388,9 @@ startActivity(new Intent(CartViewActivity.this,LoginActivity.class).setFlags(Int
                 if (s != null && !s.equals("") && !s.equals(" ") && s.length() > 0) {
                     int billAmount = 0;
                     float recivedAmount = Float.parseFloat(edtChequeRecivedAmount.getText().toString().trim());
-                    if (serverCart != null && serverCart.getTotalbillAmount() != -1) {
-                        billAmount =(int)serverCart.getTotalbillAmount();       }/*else  if(serverCart!=null&&serverCart.getTotalbillAmount()!=-1)
+                    if (serverCart != null && serverCart.getTotalbillAmountWithDsic() != -1) {
+                        billAmount = (int) serverCart.getTotalbillAmountWithDsic();
+                    }/*else  if(serverCart!=null&&serverCart.getTotalbillAmount()!=-1)
                     {
                         billAmount=serverCart.getTotalbillAmount();
                     }*/
@@ -1281,8 +1423,9 @@ startActivity(new Intent(CartViewActivity.this,LoginActivity.class).setFlags(Int
                 if (s != null && !s.equals("") && !s.equals(" ") && s.length() > 0) {
                     int billAmount = 0;
                     float recivedAmount = Float.parseFloat(edtCardRecivedAmount.getText().toString().trim());
-                    if (serverCart != null && serverCart.getTotalbillAmount() != -1) {
-                        billAmount = (int)serverCart.getTotalbillAmount(); }/*else  if(serverCart!=null&&serverCart.getTotalbillAmount()!=-1)
+                    if (serverCart != null && serverCart.getTotalbillAmountWithDsic() != -1) {
+                        billAmount = (int) serverCart.getTotalbillAmountWithDsic();
+                    }/*else  if(serverCart!=null&&serverCart.getTotalbillAmount()!=-1)
                     {
                         billAmount=serverCart.getTotalbillAmount();
                     }*/

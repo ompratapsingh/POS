@@ -14,6 +14,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.mak.pos.Model.POJO.MenuCategory;
 import com.mak.pos.Model.POJO.MenuItemInfo;
@@ -32,8 +33,8 @@ public class Constant {
     private static Dialog npDialog;
     public static ArrayList<com.mak.pos.Model.POJO.MenuCategory> MenuCategory;
     public static ArrayList<MenuItemInfo> MenuCategoryItem;
-    public static HashMap<MenuCategory,ArrayList<MenuItemInfo>> categoryItemhMap=new HashMap<>();
-    public static HashMap<Integer,HashMap<MenuCategory,ArrayList<MenuItemInfo>>> tableCategoryItemhMap=new HashMap<>();
+    public static HashMap<MenuCategory, ArrayList<MenuItemInfo>> categoryItemhMap = new HashMap<>();
+    public static HashMap<Integer, HashMap<MenuCategory, ArrayList<MenuItemInfo>>> tableCategoryItemhMap = new HashMap<>();
 
     public static void ShowAlertDialog(final Activity context, String title, String msg, final String btnstr) {
 
@@ -84,7 +85,7 @@ public class Constant {
         npDialog.show();
     }
 
-    public static void hideKeyboard( Activity activity) {
+    public static void hideKeyboard(Activity activity) {
         // Check if no view has focus:
         View view = activity.getCurrentFocus();
         if (view != null) {
@@ -146,5 +147,10 @@ public class Constant {
         });
     }
 
+    public static void showToast(final Activity activity, String msg) {
+        Toast toast = Toast.makeText(activity, msg, Toast.LENGTH_LONG);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
 
 }

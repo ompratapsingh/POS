@@ -17,13 +17,24 @@ public class Cart implements Serializable
 
     private String captain;
 
-    private String srl;
+    private String srl
+            ;
 
     private String type;
 
     private String enteredBy;
 
     private int totalbillAmount;
+
+    public int getTotalbillAmountWithDsic() {
+        return totalbillAmountWithDsic;
+    }
+
+    public void setTotalbillAmountWithDsic(int totalbillAmountWithDsic) {
+        this.totalbillAmountWithDsic = totalbillAmountWithDsic;
+    }
+
+    private int totalbillAmountWithDsic;
 
     private String branch;
 
@@ -58,7 +69,24 @@ public class Cart implements Serializable
     }
 
     private String tableStatus;
+    private boolean isBillGenrate;
+    private String specialDiscount;
 
+    public boolean isBillGenrate() {
+        return isBillGenrate;
+    }
+
+    public void setBillGenrate(boolean billGenrate) {
+        isBillGenrate = billGenrate;
+    }
+
+    public String getSpecialDiscount() {
+        return specialDiscount;
+    }
+
+    public void setSpecialDiscount(String specialDiscount) {
+        this.specialDiscount = specialDiscount;
+    }
 
     public String getPrefix ()
     {

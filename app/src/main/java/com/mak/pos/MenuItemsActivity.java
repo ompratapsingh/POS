@@ -38,7 +38,7 @@ public class MenuItemsActivity extends AppCompatActivity {
 
     RecyclerView rvMenu;
     AdapterSectionRecycler adapterRecycler;
-    List<SectionHeader> sectionHeaders;
+    List<SectionHeader> sectionHeaders=new ArrayList<>();
     ImageView ivCart, mt_clear;
     CircleView tvBadge;
     EditText EdtSearch;
@@ -227,6 +227,7 @@ public class MenuItemsActivity extends AppCompatActivity {
     }
 
     private void setItems() {
+
         HashMap<MenuCategory, ArrayList<MenuItemInfo>> tableItems = Constant.tableCategoryItemhMap.get(com.mak.pos.Utility.Constant.CurrentTable);
         for (int i = 0; i < Constant.MenuCategory.size(); i++) {
 
