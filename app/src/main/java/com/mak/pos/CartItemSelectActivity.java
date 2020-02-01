@@ -127,9 +127,12 @@ private Items cartItem;
                     items.setDiscAmt(calclateTax(listMenuItem.getDiscPercent(),listMenuItem.getRate()));
                     items.setTaxCode(listMenuItem.getTaxCode());
                     items.setRemarks("");
-                    items.setTaxamt(calclateTax(listMenuItem.getTaxPercentage(),listMenuItem.getRate()));
+              /*      items.setTaxamt(calclateTax(listMenuItem.getTaxPercentage(),listMenuItem.getRate()));
                     items.setAddtaxAmt(calclateTax(listMenuItem.getAddTax(),listMenuItem.getRate()));
-                    items.setAddtaxAmt2(calclateTax(listMenuItem.getSurcharge(),listMenuItem.getRate()));
+                    items.setAddtaxAmt2(calclateTax(listMenuItem.getSurcharge(),listMenuItem.getRate()));*/
+                    items.setTaxamt(listMenuItem.getTaxPercentage());
+                    items.setAddtaxAmt(listMenuItem.getAddTax());
+                    items.setAddtaxAmt2(listMenuItem.getSurcharge());
                     items.setQty(itemCount);
                     //items.setSno(listMenuItem.getStore_code());
                     cartlist.add(items);

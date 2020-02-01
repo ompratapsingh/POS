@@ -22,7 +22,6 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 
 public interface ApiInterface {
-
     @Headers("content-type: application/json")
     @POST("user/login")
     Call<UserModel> onLoginAttempt(@Body JsonObject userBody);
@@ -40,6 +39,11 @@ public interface ApiInterface {
     @Headers("content-type: application/json")
     @POST("menu/generateBill")
     Call<Cart> onGenrateBill(@Body JsonObject object);
+
+
+    @Headers("content-type: application/json")
+    @POST("menu/generateBill")
+    Call<JsonObject> onGenrateBillTest(@Body JsonObject object);
 
 
     @Headers("content-type: application/json")

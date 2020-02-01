@@ -1,11 +1,13 @@
 package com.mak;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 
 
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.Window;
@@ -20,8 +22,13 @@ import com.mak.pos.Model.POJO.MenuCategory;
 import com.mak.pos.Model.POJO.MenuItemInfo;
 import com.mak.pos.R;
 
+import net.ralphpina.permissionsmanager.PermissionsManager;
+
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 
 /**
  * Created by iMobTree on 9/22/2017.
@@ -33,8 +40,9 @@ public class Constant {
     private static Dialog npDialog;
     public static ArrayList<com.mak.pos.Model.POJO.MenuCategory> MenuCategory;
     public static ArrayList<MenuItemInfo> MenuCategoryItem;
-    public static HashMap<MenuCategory, ArrayList<MenuItemInfo>> categoryItemhMap = new HashMap<>();
-    public static HashMap<Integer, HashMap<MenuCategory, ArrayList<MenuItemInfo>>> tableCategoryItemhMap = new HashMap<>();
+    public static HashMap<MenuCategory,ArrayList<MenuItemInfo>> categoryItemhMap=new HashMap<>();
+    public static HashMap<Integer,HashMap<MenuCategory,ArrayList<MenuItemInfo>>> tableCategoryItemhMap=new HashMap<>();
+    private static AlertDialog alertDialog;
 
     public static void ShowAlertDialog(final Activity context, String title, String msg, final String btnstr) {
 
@@ -84,8 +92,65 @@ public class Constant {
 
         npDialog.show();
     }
+    public static void ShowPermissionSettings(final String permission, final Activity activity) {
+        if (alertDialog == null) {
+            alertDialog = new AlertDialog.Builder(
+                    activity).create();
+            alertDialog.setCancelable(false);
+            // Setting Dialog Title
+            alertDialog.setTitle("Permission Necessary!");
+        }
+        // Setting Dialog Message
+        alertDialog.setMessage(permission + " permission is needed go to the settings and enable?");
 
-    public static void hideKeyboard(Activity activity) {
+        // Setting Icon to Dialog
+        ;
+
+        // Setting Positive "Yes" Button
+        alertDialog.setButton(Dialog.BUTTON_POSITIVE, "Yes", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                PermissionsManager.get()
+                        .intentToAppSettings(activity);
+            }
+        });
+        alertDialog.setButton(Dialog.BUTTON_NEGATIVE, "No", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                if (permission.equalsIgnoreCase("Location")) {
+                   /* if(activity  instanceof RestaurantSignUpStepsActivity)
+                    {
+                        RestaurantSignUpStepsActivity.MainCtx.finish();
+                    }
+                    else
+                    {
+                        MainActivity.MainCtx.finish();
+                    }*/
+                    android.os.Process.killProcess(android.os.Process.myPid());
+
+                }
+                alertDialog.dismiss();
+            }
+        });
+        if (alertDialog != null && !alertDialog.isShowing()) {
+            try {
+                alertDialog.show();
+            } catch (Exception e) {
+                Log.e("dfg", "gh");
+            }
+
+        }
+
+    }
+    public static String getBillDateTime(Date date) {
+        final SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy - hh:mm aa", Locale.US);
+        return format.format(date);
+    }
+    public static String getBillTime(Date date) {
+        final SimpleDateFormat format = new SimpleDateFormat("hh:mm", Locale.US);
+        return format.format(date);
+    }
+    public static void hideKeyboard( Activity activity) {
         // Check if no view has focus:
         View view = activity.getCurrentFocus();
         if (view != null) {
@@ -146,11 +211,11 @@ public class Constant {
             }
         });
     }
-
-    public static void showToast(final Activity activity, String msg) {
-        Toast toast = Toast.makeText(activity, msg, Toast.LENGTH_LONG);
-        toast.setGravity(Gravity.CENTER, 0, 0);
-        toast.show();
-    }
+public static void  showToast(final Activity activity,String msg)
+{
+    Toast toast = Toast.makeText(activity,msg, Toast.LENGTH_LONG);
+    toast.setGravity(Gravity.CENTER, 0, 0);
+    toast.show();
+}
 
 }

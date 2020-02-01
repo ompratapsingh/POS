@@ -51,10 +51,10 @@ public class PersonListAdapter extends RecyclerView.Adapter<PersonListAdapter.Vi
         if(position==getItemCount()-1)
         {
             holder.tvTable.setText("C");
-        }else if(position==getItemCount()-2)
+        }/*else if(position==getItemCount()-2)
         {
             holder.tvTable.setText("0");
-        }else
+        }*/else
         {
             holder.tvTable.setText(String.valueOf(table));
         }

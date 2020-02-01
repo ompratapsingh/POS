@@ -12,6 +12,8 @@ import com.mak.pos.Model.TableModel;
 import com.mak.pos.Model.POJO.UserModel;
 import com.mak.pos.Utility.PreferencesManager;
 
+import net.ralphpina.permissionsmanager.PermissionsManager;
+
 /**
  * Created by MAKsuD on 8/26/2019.
  */
@@ -27,6 +29,7 @@ public class App extends Application {
         MultiDex.install(this);
         Fresco.initialize(this);
         PreferencesManager.initializeInstance(context);
+        PermissionsManager.init(this);
 
     }
     public static int getScreenWidth() {

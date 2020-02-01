@@ -4,6 +4,8 @@
     package="com.mak.pos">
 
     <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
         android:name="com.mak.App"
         android:allowBackup="false"
@@ -14,6 +16,18 @@
         android:supportsRtl="true"
         android:usesCleartextTraffic="true"
         android:theme="@style/AppTheme">
+
+        <provider
+            android:name="android.support.v4.content.FileProvider"
+            android:authorities="com.mak.pos.provider"
+            android:exported="false"
+            android:grantUriPermissions="true"
+            >
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths"
+                tools:replace="android:resource"/>
+        </provider>
         <meta-data
             android:name="android.support.VERSION"
             android:value="26.0.0"
@@ -69,13 +83,10 @@ android:screenOrientation="portrait"
             android:screenOrientation="portrait"
 
             >
-          <!--  <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>-->
 
         </activity>
+
+
     </application>
 
 </manifest>

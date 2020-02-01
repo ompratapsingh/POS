@@ -57,10 +57,11 @@ public class TableListAdapter extends RecyclerView.Adapter<TableListAdapter.View
         holder.tableInfo=tableList.get(position);
                 if(holder.tableInfo!=null) {
                     holder.tvTable.setText(holder.tableInfo.getName());
-                    if(holder.tableInfo!=null&&holder.tableInfo.getAmount()!=null&&!holder.tableInfo.getAmount().isEmpty())
-                        if(holder.tableInfo.getAmount()!=null)
-                    holder.tvAmount.setText(Constant.twoDigitValue(Float.parseFloat(holder.tableInfo.getAmount())));
-
+                    if(holder.tableInfo!=null&&holder.tableInfo.getAmount()!=null&&!holder.tableInfo.getAmount().isEmpty()) {
+                        if (holder.tableInfo.getAmount() != null) {
+                                holder.tvAmount.setText(Constant.twoDigitValue(Float.parseFloat(holder.tableInfo.getAmount())));
+                        }
+                    }
                     holder.tvTable.setTextSize(txtTable);
                     holder.tvAmount.setTextSize(txtAmount);
                 }

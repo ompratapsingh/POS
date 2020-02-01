@@ -17,8 +17,7 @@ public class Cart implements Serializable
 
     private String captain;
 
-    private String srl
-            ;
+    private String srl;
 
     private String type;
 
@@ -71,6 +70,46 @@ public class Cart implements Serializable
     private String tableStatus;
     private boolean isBillGenrate;
     private String specialDiscount;
+    private String disPrcnt;
+
+    public String getDisPrcnt() {
+        return disPrcnt;
+    }
+
+    public void setDisPrcnt(String disPrcnt) {
+        this.disPrcnt = disPrcnt;
+    }
+
+    private String billno;
+
+    public String getBillno() {
+        return billno;
+    }
+
+    public void setBillno(String billno) {
+        this.billno = billno;
+    }
+
+    public RestaurantDetails getRestaurantDetails() {
+        return restaurantDetails;
+    }
+
+    public void setRestaurantDetails(RestaurantDetails restaurantDetails) {
+        this.restaurantDetails = restaurantDetails;
+    }
+
+    private RestaurantDetails restaurantDetails;
+
+
+    public String getBillSrl() {
+        return billSrl;
+    }
+
+    public void setBillSrl(String billSrl) {
+        this.billSrl = billSrl;
+    }
+
+    private String billSrl;
 
     public boolean isBillGenrate() {
         return isBillGenrate;

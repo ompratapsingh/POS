@@ -57,7 +57,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (response != null && response.isSuccessful() && response.body() != null) {
 
                     String today = "Today's Sales - ";
-                    String month = "Monthly Sales - ";
+                    String month = "Month Sales - ";
                     String yearly = "Yearly Sales - ";
                     if (!response.body().get("todaySale").isJsonNull())
                         today = today + response.body().get("todaySale").getAsString();

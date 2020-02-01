@@ -29,9 +29,10 @@
         android:layout_centerVertical="true"
 
         android:layout_gravity="center"
-        fresco:placeholderImage="@drawable/app_logo"
-        fresco:actualImageResource="@drawable/app_logo"
+        fresco:placeholderImage="@drawable/place_holder"
+        fresco:actualImageResource="@drawable/place_holder"
         fresco:actualImageScaleType="centerCrop"
+        fresco:placeholderImageScaleType="centerCrop"
         fresco:roundedCornerRadius="10dp"
         fresco:roundingBorderColor="@color/appColor"
         fresco:roundingBorderWidth="1dp"

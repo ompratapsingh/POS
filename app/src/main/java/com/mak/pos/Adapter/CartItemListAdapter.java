@@ -49,8 +49,13 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemListAdapte
         holder.Item=menuItem.get(position);
         holder.tvItemName.setText(holder.Item.getItem_name());
         holder.tvItemPrice.setText(Constant.twoDigitValue(holder.Item.getRate()));
-        holder.tvTaxAmt.setText(Constant.twoDigitValue(holder.Item.getTaxamt()));
-        holder.tvTaxAmt2.setText(Constant.twoDigitValue(holder.Item.getAddtaxAmt()));
+        if(isLocal) {
+            holder.tvTaxAmt.setText(Constant.twoDigitValue(calclateTax(holder.Item.getTaxamt(),holder.Item.getRate(),holder.Item.getQty())));
+            holder.tvTaxAmt2.setText(Constant.twoDigitValue(calclateTax(holder.Item.getAddtaxAmt(),holder.Item.getRate(),holder.Item.getQty())));
+        }else{
+            holder.tvTaxAmt.setText(Constant.twoDigitValue(holder.Item.getTaxamt()));
+            holder.tvTaxAmt2.setText(Constant.twoDigitValue(holder.Item.getAddtaxAmt()));
+        }
         holder.tvItemQty.setText(String.valueOf(holder.Item.getQty()));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,7 +81,13 @@ public class CartItemListAdapter extends RecyclerView.Adapter<CartItemListAdapte
     }
 
 
+    private float calclateTax(float percentage, float rate,int qty) {
 
+        rate = rate * qty;
+        rate = rate * percentage;
+        rate = rate / 100;
+        return rate;
+    }
 
 
     public class ViewHolder extends RecyclerView.ViewHolder{

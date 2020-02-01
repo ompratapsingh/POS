@@ -23,8 +23,8 @@ public class LoginActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-      //    App.getPrefs().setString("URL","http://ec2-13-57-17-122.us-west-1.compute.amazonaws.com");
-     //App.getPrefs().setString("PORT","8080");
+        /*App.getPrefs().setString("URL","http://ec2-13-56-233-205.us-west-1.compute.amazonaws.com");
+       App.getPrefs().setString("PORT","8080");*/
         if(App.getPrefs().getValue("URL")==null&&App.getPrefs().getValue("PORT")==null)
         {
 
